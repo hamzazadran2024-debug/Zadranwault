@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1b2b">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Vault">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<title>Zadran Vault</title>
+<style>
+:root{--bg:#0b1b2b;--card:#13273b;--c2:#1a3350;--tx:#eaf1f8;--mut:#8ea3b8;--gold:#e2b24a;--ok:#2fbf80;--bad:#ef6a6a;--bd:#24405c;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:"Noto Naskh Arabic","Segoe UI",Tahoma,sans-serif;line-height:1.6}
+[hidden]{display:none!important}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+#lock{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;animation:pop .5s ease both}
+.shield{font-size:3rem;filter:drop-shadow(0 4px 14px #e2b24a55)}
+#lt{margin:6px 0 14px;font-size:1.05rem}#lmsg{color:var(--bad);min-height:1.6em;font-size:.9rem}
+#dots{display:flex;gap:12px;justify-content:center;direction:ltr;margin-bottom:6px}
+#dots i{width:14px;height:14px;border-radius:50%;border:2px solid var(--gold);transition:.15s}#dots i.on{background:var(--gold);transform:scale(1.15)}
+.kp{display:grid;grid-template-columns:repeat(3,72px);gap:14px;direction:ltr;margin-top:10px}
+.kp button{height:72px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 1.5rem inherit;cursor:pointer;transition:.12s}
+.kp button:active{background:var(--gold);color:#111;transform:scale(.93)}
+header{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5}
+header b{color:var(--gold);font-size:1.15rem}
+main{max-width:640px;margin:0 auto;padding:0 14px 90px}
+section{animation:up .4s ease both}
+.wc{position:relative;background:linear-gradient(135deg,#1e4366,#0f2a45 60%,#3a2f12);border:1px solid var(--bd);border-radius:20px;padding:20px;margin-bottom:14px;box-shadow:0 10px 28px #0006}
+.wc small{color:var(--mut)}.big{font-size:1.9rem;font-weight:700;color:var(--gold);direction:ltr;text-align:right}
+.eye{position:absolute;left:14px;top:14px;background:transparent;border:0;font-size:1.3rem;cursor:pointer}
+.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+.qb{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:14px 4px;color:var(--tx);font:inherit;font-size:1.4rem;cursor:pointer;transition:.15s}
+.qb span{display:block;font-size:.85rem;color:var(--mut)}.qb:active{transform:scale(.94)}
+h3{margin:16px 4px 8px;font-size:1rem;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:6px 14px;margin-bottom:12px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 0;border-top:1px solid var(--bd)}.row:first-child{border-top:0}
+.row small{color:var(--mut)}.in{color:var(--ok)}.out{color:var(--bad)}.xf{color:var(--gold)}
+.amt{direction:ltr;font-weight:700;white-space:nowrap}
+input,select,textarea{width:100%;padding:11px;border-radius:12px;border:1px solid var(--bd);background:var(--c2);color:var(--tx);font:inherit;margin:4px 0}
+label{font-size:.82rem;color:var(--mut)}
+.btn{border:0;border-radius:12px;padding:11px 16px;background:var(--gold);color:#17120a;font:inherit;font-weight:700;cursor:pointer;margin:6px 0;transition:.12s}.btn:active{transform:scale(.96)}
+.btn.g{background:var(--c2);color:var(--tx)}.btn.r{background:var(--bad);color:#fff}.btn.s{padding:4px 10px;margin:0;font-size:.8rem}
+.bar{height:9px;border-radius:9px;background:var(--c2);overflow:hidden;margin:4px 0 8px}.bar i{display:block;height:100%;background:var(--gold);transition:width .6s}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:#0e2236ee;backdrop-filter:blur(10px);border-top:1px solid var(--bd);padding-bottom:env(safe-area-inset-bottom,0px);z-index:6}
+nav button{flex:1;background:none;border:0;color:var(--mut);padding:10px 2px;font:inherit;font-size:.8rem;cursor:pointer}nav button.on{color:var(--gold)}
+nav button span{display:block;font-size:1.3rem}
+#sheet{position:fixed;inset:0;background:#000a;z-index:9;display:flex;align-items:flex-end;justify-content:center}
+.sh{background:var(--card);width:100%;max-width:640px;border-radius:22px 22px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));max-height:92vh;overflow:auto;animation:up .3s ease both}
+.tabs{display:flex;gap:6px}.tabs button{flex:1;padding:9px;border-radius:10px;border:1px solid var(--bd);background:var(--c2);color:var(--tx);font:inherit;cursor:pointer}.tabs button.on{background:var(--gold);color:#17120a;font-weight:700}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.note{color:var(--mut);font-size:.8rem;text-align:center;padding:6px 10px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="lock">
+  <div class="shield">🛡️</div><h2 style="margin:4px 0;color:var(--gold)">Zadran Vault</h2>
+  <div id="lt"></div><div id="dots"><i></i><i></i><i></i><i></i><i></i><i></i></div><div id="lmsg"></div>
+  <div class="kp" id="kp"></div>
+</div>
+
+<div id="app" hidden>
+<header><b>🛡️ Zadran Vault</b><button class="btn g s" id="lknow">🔒 Lock</button></header>
+<main>
+ <section id="v-home"></section>
+ <section id="v-hist" hidden>
+  <div class="f2"><input id="q" placeholder="🔎 لټون"><select id="tf"><option value="">ټول</option><option value="in">عاید</option><option value="out">مصرف</option><option value="xfer">لیږد</option></select></div>
+  <div class="card" id="hl"></div>
+ </section>
+ <section id="v-rep" hidden>
+  <label>میاشت</label><input type="month" id="rm"><div id="rr"></div>
+ </section>
+ <section id="v-set" hidden>
+  <h3>🔒 امنیت</h3><div class="card" style="padding:12px 14px">
+   <label>Auto-lock (دقیقې)</label><select id="al"><option value="1">1</option><option value="2">2</option><option value="5">5</option><option value="10">10</option></select>
+   <label>اوسنی PIN</label><input id="op" type="password" inputmode="numeric" maxlength="6">
+   <label>نوی PIN (۶ عدده)</label><input id="np" type="password" inputmode="numeric" maxlength="6">
+   <button class="btn" id="cp">PIN بدل کړئ</button></div>
+  <h3>💼 حسابونه</h3><div class="card" style="padding:12px 14px"><div id="sacc"></div>
+   <input id="an" placeholder="د نوي حساب نوم (مثلاً Afghan Pay)"><button class="btn g" id="aa">حساب زیات کړئ</button></div>
+  <h3>💾 Backup (کوډ شوی)</h3><div class="card" style="padding:12px 14px">
+   <textarea id="bk" rows="3" placeholder="Backup متن دلته"></textarea>
+   <div class="f2"><button class="btn g" id="bb">Backup جوړ کړئ</button><button class="btn g" id="br">Restore</button></div>
+   <label>Restore لپاره د هغه Backup PIN</label><input id="rp" type="password" inputmode="numeric" maxlength="6"></div>
+  <button class="btn r" id="wp">ټول معلومات حذف کړئ</button>
+  <p class="note">معلومات په همدې وسیله کې د PIN څخه په AES-256-GCM او PBKDF2 (210,000 تکرارونو) کوډ کیږي. PIN که هېر شي، معلومات بیرته نه ترلاسه کیږي. څو ځلې ناسم PIN ځنډ ورکوي.</p>
+  <p class="note">دا شخصي پیسو ثبتولو Vault دی، ریښتینې پیسې نه لیږدوي. جوړونکی: Amir Hamza Zadran</p>
+ </section>
+</main>
+<nav id="nav"><button data-v="home" class="on"><span>🏠</span>کور</button><button data-v="hist"><span>📜</span>معاملې</button><button data-v="rep"><span>📊</span>راپور</button><button data-v="set"><span>⚙️</span>Settings</button></nav>
+</div>
+
+<div id="sheet" hidden><div class="sh">
+ <div class="tabs" id="tabs"><button data-tab="in">➕ عاید</button><button data-tab="out">➖ مصرف</button><button data-tab="xfer">🔁 لیږد</button></div>
+ <label>له حساب</label><select id="tacc"></select>
+ <div id="togrp"><label>ته حساب</label><select id="tto"></select></div>
+ <div class="f2"><div><label>مبلغ (AFN)</label><input id="ta" type="number" inputmode="decimal" min="0"></div><div><label>نېټه</label><input id="td" type="date"></div></div>
+ <div id="cgrp"><label>کټګوري</label><select id="tc"></select></div>
+ <label>یادښت</label><input id="tn">
+ <div class="f2"><button class="btn" id="tsave">💾 ثبت</button><button class="btn g" id="tx">بندول</button></div>
+</div></div>
+
+<script>
+(function(){
+var K="zvault-v1",M="zvault-meta",CATS=["خوراک","ټرانسپورت","کورنۍ","زده کړه","روغتیا","معاش","سوداګري","بل"],TL={in:"عاید",out:"مصرف",xfer:"لیږد"};
+var S=null,key=null,salt=null,pin="",mode="",tmp="",timer=null,hid=0,busy=false,view="home",ttype="out";
+var $=function(i){return document.getElementById(i)},enc=new TextEncoder(),dec=new TextDecoder();
+var today=new Date().toISOString().slice(0,10);
+function esc(t){var d=document.createElement("div");d.textContent=t==null?"":t;return d.innerHTML}
+function money(n){return (Math.round(n*100)/100).toLocaleString("en")+" AFN"}
+function toB(u){var s="";u.forEach(function(c){s+=String.fromCharCode(c)});return btoa(s)}
+function fromB(s){return Uint8Array.from(atob(s),function(c){return c.charCodeAt(0)})}
+function meta(){try{return JSON.parse(localStorage.getItem(M))||{f:0,u:0}}catch(e){return{f:0,u:0}}}
+function setMeta(m){try{localStorage.setItem(M,JSON.stringify(m))}catch(e){}}
+function store(){try{return JSON.parse(localStorage.getItem(K))}catch(e){return null}}
+async function derive(p,s){var k=await crypto.subtle.importKey("raw",enc.encode(p),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt:s,iterations:210000,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
+async function seal(k,o){var iv=crypto.getRandomValues(new Uint8Array(12)),ct=await crypto.subtle.encrypt({name:"AES-GCM",iv:iv},k,enc.encode(JSON.stringify(o)));return{iv:toB(iv),ct:toB(new Uint8Array(ct))}}
+async function unseal(k,b){var pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:fromB(b.iv)},k,fromB(b.ct));return JSON.parse(dec.decode(pt))}
+async function persist(){var b=await seal(key,S);try{localStorage.setItem(K,JSON.stringify({v:1,salt:toB(salt),iv:b.iv,ct:b.ct}))}catch(e){alert("ذخیره نه شوه")}}
+
+/* keypad + lock */
+$("kp").innerHTML=["1","2","3","4","5","6","7","8","9","","0","⌫"].map(function(k){return k?'<button data-k="'+(k==="⌫"?"del":k)+'">'+k+'</button>':'<span></span>'}).join("");
+function dots(){document.querySelectorAll("#dots i").forEach(function(d,i){d.classList.toggle("on",i<pin.length)})}
+function setMode(){var has=!!store();mode=has?"unlock":"create";$("lt").textContent=has?"د Vault د پرانیستلو لپاره PIN ولیکئ":"نوی ۶ عددي PIN جوړ کړئ";$("lmsg").textContent=""}
+function showLock(){S=null;key=null;pin="";tmp="";clearTimeout(timer);$("app").hidden=true;$("sheet").hidden=true;$("lock").hidden=false;setMode();dots()}
+function enter(){pin="";$("lock").hidden=true;$("app").hidden=false;view="home";render();arm()}
+function press(d){if(busy||S)return;if(d==="del")pin=pin.slice(0,-1);else if(pin.length<6)pin+=d;dots();if(pin.length===6)submit()}
+function fail(msg){pin="";dots();$("lmsg").textContent=msg;var l=$("dots");l.style.animation="none";void l.offsetWidth;l.style.animation="shake .35s"}
+async function submit(){busy=true;var p=pin;try{
+ if(mode==="create"){tmp=p;pin="";mode="confirm";$("lt").textContent="PIN بیا ولیکئ (تایید)";$("lmsg").textContent="";dots();return}
+ if(mode==="confirm"){if(p!==tmp){tmp="";mode="create";setMode();fail("PIN سره نه برابریږي، بیا هڅه وکړئ");return}
+  salt=crypto.getRandomValues(new Uint8Array(16));key=await derive(p,salt);
+  S={acc:[{id:1,name:"نغدې",type:"cash"},{id:2,name:"بانک",type:"bank"}],tx:[],cfg:{lock:1,hide:false}};await persist();enter();return}
+ var m=meta(),now=Date.now();if(m.u>now){fail("ډېرې هڅې. "+Math.ceil((m.u-now)/1000)+" ثانیې انتظار وکړئ");return}
+ var st=store();
+ try{var s2=fromB(st.salt),k=await derive(p,s2);S=await unseal(k,st);salt=s2;key=k;setMeta({f:0,u:0});enter()}
+ catch(e){S=null;m.f=(m.f||0)+1;if(m.f>=5)m.u=now+30000*Math.pow(2,Math.min(m.f-5,6));setMeta(m);fail("PIN ناسم دی ("+m.f+")")}
+}finally{busy=false}}
+function arm(){clearTimeout(timer);if(S)timer=setTimeout(showLock,(S.cfg.lock||1)*60000)}
+["click","keydown","touchstart"].forEach(function(e){document.addEventListener(e,function(){if(S)arm()},{passive:true})});
+document.addEventListener("visibilitychange",function(){if(document.hidden)hid=Date.now();else if(S&&Date.now()-hid>30000)showLock()});
+document.addEventListener("keydown",function(e){if(!$("lock").hidden){if(/^[0-9]$/.test(e.key))press(e.key);if(e.key==="Backspace")press("del")}});
+
+/* data */
+function bal(a){var b=0;S.tx.forEach(function(t){if(t.type==="in"&&t.acc==a.id)b+=t.amt;if(t.type==="out"&&t.acc==a.id)b-=t.amt;if(t.type==="xfer"){if(t.acc==a.id)b-=t.amt;if(t.to==a.id)b+=t.amt}});return b}
+function an(id){var a=S.acc.find(function(x){return x.id==id});return a?a.name:"؟"}
+function rows(a,del){return a.length?a.map(function(t){var c=t.type==="in"?"in":t.type==="out"?"out":"xf",sg=t.type==="in"?"+":t.type==="out"?"−":"⇄";
+ return '<div class="row"><div><b>'+esc(t.type==="xfer"?an(t.acc)+" ← "+an(t.to):(t.cat||TL[t.type]))+'</b><br><small>'+esc(t.date)+' · '+esc(t.type==="xfer"?"":an(t.acc))+' '+esc(t.note)+'</small></div><div style="text-align:left"><span class="amt '+c+'">'+sg+' '+money(t.amt)+'</span>'+(del?'<br><button class="btn r s" data-dt="'+t.id+'">حذف</button>':'')+'</div></div>'}).join(""):'<div class="row"><small>تر اوسه معامله نشته</small></div>'}
+
+function render(){["home","hist","rep","set"].forEach(function(v){$("v-"+v).hidden=v!==view});
+ document.querySelectorAll("#nav button").forEach(function(b){b.classList.toggle("on",b.dataset.v===view)});
+ ({home:rHome,hist:rHist,rep:rRep,set:rSet})[view]()}
+function rHome(){var tot=S.acc.reduce(function(s,a){return s+bal(a)},0),h=S.cfg.hide;
+ $("v-home").innerHTML='<div class="wc"><small>ټوله پانګه</small><div class="big">'+(h?"••••••":money(tot))+'</div><button class="eye" id="eye">'+(h?"👁️":"🙈")+'</button></div>'+
+ '<div class="qa"><button class="qb" data-t="in">➕<span>عاید</span></button><button class="qb" data-t="out">➖<span>مصرف</span></button><button class="qb" data-t="xfer">🔁<span>لیږد</span></button></div>'+
+ '<h3>حسابونه</h3><div class="card">'+S.acc.map(function(a){return '<div class="row"><b>'+esc(a.name)+'</b><span class="amt">'+(h?"••••":money(bal(a)))+'</span></div>'}).join("")+'</div>'+
+ '<h3>وروستي معاملې</h3><div class="card">'+rows(S.tx.slice(-5).reverse(),false)+'</div>'}
+function rHist(){var q=$("q").value.trim().toLowerCase(),f=$("tf").value;
+ var a=S.tx.filter(function(t){return(!f||t.type===f)&&(!q||(t.cat+" "+t.note+" "+an(t.acc)).toLowerCase().indexOf(q)>-1)}).slice().reverse().slice(0,100);$("hl").innerHTML=rows(a,true)}
+function rRep(){if(!$("rm").value)$("rm").value=today.slice(0,7);var m=$("rm").value,i=0,o=0,c={};
+ S.tx.forEach(function(t){if(t.date.slice(0,7)!==m)return;if(t.type==="in")i+=t.amt;if(t.type==="out"){o+=t.amt;c[t.cat]=(c[t.cat]||0)+t.amt}});
+ var ks=Object.keys(c).sort(function(a,b){return c[b]-c[a]});
+ $("rr").innerHTML='<div class="card"><div class="row"><span>ټول عاید</span><b class="amt in">'+money(i)+'</b></div><div class="row"><span>ټول مصرف</span><b class="amt out">'+money(o)+'</b></div><div class="row"><span>خالص</span><b class="amt">'+money(i-o)+'</b></div></div><h3>د مصرف کټګورۍ</h3><div class="card" style="padding:12px 14px">'+
+ (ks.length?ks.map(function(k){return '<div>'+esc(k)+' <small>'+money(c[k])+'</small><div class="bar"><i style="width:'+Math.round(c[k]/o*100)+'%"></i></div></div>'}).join(""):"<small>مصرف نشته</small>")+'</div>'}
+function rSet(){$("al").value=String(S.cfg.lock||1);$("sacc").innerHTML=S.acc.map(function(a){return '<div class="row"><b>'+esc(a.name)+'</b><span class="amt">'+money(bal(a))+'</span></div>'}).join("")}
+
+/* sheet */
+function fillAcc(){var o=S.acc.map(function(a){return '<option value="'+a.id+'">'+esc(a.name)+'</option>'}).join("");$("tacc").innerHTML=o;$("tto").innerHTML=o;if(S.acc[1])$("tto").value=S.acc[1].id}
+function setType(t){ttype=t;document.querySelectorAll("#tabs button").forEach(function(b){b.classList.toggle("on",b.dataset.tab===t)});$("togrp").hidden=t!=="xfer";$("cgrp").hidden=t==="xfer"}
+function openSheet(t){fillAcc();$("tc").innerHTML=CATS.map(function(c){return "<option>"+c+"</option>"}).join("");$("ta").value="";$("tn").value="";$("td").value=today;setType(t);$("sheet").hidden=false}
+function closeSheet(){$("sheet").hidden=true}
+$("tx").onclick=closeSheet;
+$("tsave").onclick=async function(){var amt=+$("ta").value,acc=+$("tacc").value,to=+$("tto").value;
+ if(!(amt>0)){alert("مبلغ ولیکئ");return}
+ if(ttype==="xfer"&&acc===to){alert("دوه مختلف حسابونه وټاکئ");return}
+ if(ttype!=="in"){var a=S.acc.find(function(x){return x.id===acc});if(bal(a)<amt){alert("په دې حساب کې کافي پیسې نشته");return}}
+ S.tx.push({id:Date.now(),type:ttype,acc:acc,to:to,amt:amt,cat:$("tc").value,note:$("tn").value.trim(),date:$("td").value||today});
+ await persist();closeSheet();render()};
+
+/* events */
+document.addEventListener("click",async function(e){var b=e.target.closest("button");if(!b)return;
+ if(b.dataset.k)press(b.dataset.k);
+ if(b.dataset.v&&S){view=b.dataset.v;render()}
+ if(b.dataset.t&&S)openSheet(b.dataset.t);
+ if(b.dataset.tab)setType(b.dataset.tab);
+ if(b.id==="eye"){S.cfg.hide=!S.cfg.hide;await persist();render()}
+ if(b.dataset.dt&&confirm("حذف شي؟")){S.tx=S.tx.filter(function(x){return x.id!=b.dataset.dt});await persist();render()}});
+$("lknow").onclick=showLock;
+$("q").oninput=rHist;$("tf").onchange=rHist;$("rm").onchange=rRep;
+$("al").onchange=async function(){S.cfg.lock=+this.value;await persist();arm()};
+$("aa").onclick=async function(){var n=$("an").value.trim();if(!n)return;S.acc.push({id:Date.now(),name:n,type:"other"});$("an").value="";await persist();rSet()};
+$("cp").onclick=async function(){var o=$("op").value,n=$("np").value;if(!/^\d{6}$/.test(n)){alert("نوی PIN باید ۶ عدده وي");return}
+ try{await unseal(await derive(o,salt),store())}catch(e){alert("اوسنی PIN ناسم دی");return}
+ salt=crypto.getRandomValues(new Uint8Array(16));key=await derive(n,salt);await persist();$("op").value=$("np").value="";alert("PIN بدل شو")};
+$("bb").onclick=function(){$("bk").value=localStorage.getItem(K)||"";$("bk").select()};
+$("br").onclick=async function(){try{var b=JSON.parse($("bk").value),s2=fromB(b.salt),k=await derive($("rp").value,s2),d=await unseal(k,b);
+ if(!d.acc||!d.tx)throw 0;if(!confirm("اوسني معلومات به بدل شي. دوام؟"))return;S=d;salt=s2;key=k;await persist();$("rp").value="";render();alert("Restore بشپړ شو")}catch(e){alert("Backup یا PIN ناسم دی")}};
+$("wp").onclick=function(){if(confirm("ټول معلومات او PIN حذف شي؟ دا بیرته نه کیږي.")){try{localStorage.removeItem(K)}catch(e){}setMeta({f:0,u:0});showLock()}};
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+showLock();
+})();
+</script>
+</body>
+</html>
